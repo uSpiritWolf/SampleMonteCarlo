@@ -31,7 +31,7 @@ namespace MonteCarloS
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.CencelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.CancelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,8 +49,8 @@ namespace MonteCarloS
 			this.SquarePxl = new System.Windows.Forms.Panel();
 			this.SquarePxlTextBox = new System.Windows.Forms.TextBox();
 			this.SquarePxlLabel = new System.Windows.Forms.Label();
-			this.SquarePrñ = new System.Windows.Forms.Panel();
-			this.SquarePrñTextBox = new System.Windows.Forms.TextBox();
+			this.SquarePrc = new System.Windows.Forms.Panel();
+			this.SquarePrcTextBox = new System.Windows.Forms.TextBox();
 			this.SquarePrcLabel = new System.Windows.Forms.Label();
 			this.Resolution = new System.Windows.Forms.Panel();
 			this.ResolutionTextBox = new System.Windows.Forms.TextBox();
@@ -70,7 +70,7 @@ namespace MonteCarloS
 			((System.ComponentModel.ISupportInitialize)(this.sizePointNumeric)).BeginInit();
 			this.groupBoxResult.SuspendLayout();
 			this.SquarePxl.SuspendLayout();
-			this.SquarePrñ.SuspendLayout();
+			this.SquarePrc.SuspendLayout();
 			this.Resolution.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanelMain.SuspendLayout();
@@ -91,7 +91,7 @@ namespace MonteCarloS
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.CencelMenuItem,
+            this.CancelMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -101,27 +101,27 @@ namespace MonteCarloS
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.openToolStripMenuItem.Text = "Open";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
-			// CencelMenuItem
+			// CancelMenuItem
 			// 
-			this.CencelMenuItem.Enabled = false;
-			this.CencelMenuItem.Name = "CencelMenuItem";
-			this.CencelMenuItem.Size = new System.Drawing.Size(110, 22);
-			this.CencelMenuItem.Text = "Cencel";
-			this.CencelMenuItem.Click += new System.EventHandler(this.CencelMenuItem_Click);
+			this.CancelMenuItem.Enabled = false;
+			this.CancelMenuItem.Name = "CancelMenuItem";
+			this.CancelMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CancelMenuItem.Text = "Cancel";
+			this.CancelMenuItem.Click += new System.EventHandler(this.CencelMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(107, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -237,7 +237,7 @@ namespace MonteCarloS
             0});
 			this.pointsNumeric.Location = new System.Drawing.Point(66, 10);
 			this.pointsNumeric.Maximum = new decimal(new int[] {
-            100000,
+            -2147483648,
             0,
             0,
             0});
@@ -271,7 +271,7 @@ namespace MonteCarloS
 			this.sizePointNumeric.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.sizePointNumeric.Location = new System.Drawing.Point(66, 50);
 			this.sizePointNumeric.Maximum = new decimal(new int[] {
-            20,
+            30,
             0,
             0,
             0});
@@ -284,7 +284,7 @@ namespace MonteCarloS
 			this.sizePointNumeric.Size = new System.Drawing.Size(134, 20);
 			this.sizePointNumeric.TabIndex = 2;
 			this.sizePointNumeric.Value = new decimal(new int[] {
-            4,
+            2,
             0,
             0,
             0});
@@ -293,7 +293,7 @@ namespace MonteCarloS
 			// groupBoxResult
 			// 
 			this.groupBoxResult.Controls.Add(this.SquarePxl);
-			this.groupBoxResult.Controls.Add(this.SquarePrñ);
+			this.groupBoxResult.Controls.Add(this.SquarePrc);
 			this.groupBoxResult.Controls.Add(this.Resolution);
 			this.groupBoxResult.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.groupBoxResult.Location = new System.Drawing.Point(3, 3);
@@ -332,24 +332,24 @@ namespace MonteCarloS
 			this.SquarePxlLabel.Text = "Square pxl:";
 			this.SquarePxlLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// SquarePrñ
+			// SquarePrc
 			// 
-			this.SquarePrñ.Controls.Add(this.SquarePrñTextBox);
-			this.SquarePrñ.Controls.Add(this.SquarePrcLabel);
-			this.SquarePrñ.Dock = System.Windows.Forms.DockStyle.Top;
-			this.SquarePrñ.Location = new System.Drawing.Point(3, 61);
-			this.SquarePrñ.Name = "SquarePrñ";
-			this.SquarePrñ.Size = new System.Drawing.Size(203, 45);
-			this.SquarePrñ.TabIndex = 1;
+			this.SquarePrc.Controls.Add(this.SquarePrcTextBox);
+			this.SquarePrc.Controls.Add(this.SquarePrcLabel);
+			this.SquarePrc.Dock = System.Windows.Forms.DockStyle.Top;
+			this.SquarePrc.Location = new System.Drawing.Point(3, 61);
+			this.SquarePrc.Name = "SquarePrc";
+			this.SquarePrc.Size = new System.Drawing.Size(203, 45);
+			this.SquarePrc.TabIndex = 1;
 			// 
-			// SquarePrñTextBox
+			// SquarePrcTextBox
 			// 
-			this.SquarePrñTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.SquarePrñTextBox.Location = new System.Drawing.Point(66, 14);
-			this.SquarePrñTextBox.Name = "SquarePrñTextBox";
-			this.SquarePrñTextBox.ReadOnly = true;
-			this.SquarePrñTextBox.Size = new System.Drawing.Size(134, 20);
-			this.SquarePrñTextBox.TabIndex = 1;
+			this.SquarePrcTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.SquarePrcTextBox.Location = new System.Drawing.Point(66, 14);
+			this.SquarePrcTextBox.Name = "SquarePrcTextBox";
+			this.SquarePrcTextBox.ReadOnly = true;
+			this.SquarePrcTextBox.Size = new System.Drawing.Size(134, 20);
+			this.SquarePrcTextBox.TabIndex = 1;
 			// 
 			// SquarePrcLabel
 			// 
@@ -405,7 +405,7 @@ namespace MonteCarloS
 			// 
 			this.ClearBtn.Location = new System.Drawing.Point(138, 0);
 			this.ClearBtn.Name = "ClearBtn";
-			this.ClearBtn.Size = new System.Drawing.Size(46, 30);
+			this.ClearBtn.Size = new System.Drawing.Size(52, 30);
 			this.ClearBtn.TabIndex = 4;
 			this.ClearBtn.Text = "Clear";
 			this.ClearBtn.UseVisualStyleBackColor = true;
@@ -419,7 +419,7 @@ namespace MonteCarloS
 			this.ApplyBtn.TabIndex = 3;
 			this.ApplyBtn.Text = "Apply and show";
 			this.ApplyBtn.UseVisualStyleBackColor = true;
-			this.ApplyBtn.Click += new System.EventHandler(this.ApplyBtn_ClickAsync);
+			this.ApplyBtn.Click += new System.EventHandler(this.ApplyBtn_Click);
 			// 
 			// tableLayoutPanelMain
 			// 
@@ -472,8 +472,8 @@ namespace MonteCarloS
 			this.groupBoxResult.ResumeLayout(false);
 			this.SquarePxl.ResumeLayout(false);
 			this.SquarePxl.PerformLayout();
-			this.SquarePrñ.ResumeLayout(false);
-			this.SquarePrñ.PerformLayout();
+			this.SquarePrc.ResumeLayout(false);
+			this.SquarePrc.PerformLayout();
 			this.Resolution.ResumeLayout(false);
 			this.Resolution.PerformLayout();
 			this.panel1.ResumeLayout(false);
@@ -506,13 +506,13 @@ namespace MonteCarloS
 		private System.Windows.Forms.Panel Resolution;
 		private System.Windows.Forms.TextBox ResolutionTextBox;
 		private System.Windows.Forms.Label ResolutionLabel;
-		private System.Windows.Forms.Panel SquarePrñ;
+		private System.Windows.Forms.Panel SquarePrc;
 		private System.Windows.Forms.Label SquarePrcLabel;
-		private System.Windows.Forms.TextBox SquarePrñTextBox;
+		private System.Windows.Forms.TextBox SquarePrcTextBox;
 		private System.Windows.Forms.Panel SquarePxl;
 		private System.Windows.Forms.TextBox SquarePxlTextBox;
 		private System.Windows.Forms.Label SquarePxlLabel;
-		private System.Windows.Forms.ToolStripMenuItem CencelMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem CancelMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.Panel panel1;

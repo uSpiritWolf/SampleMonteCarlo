@@ -11,24 +11,33 @@ namespace MonteCarloS
 	{
 		private Bitmap originImage;
 
-		private MonteCarloMethod monteCarloMethod = new MonteCarloMethod();
+		private MaskForm maskForm = new MaskForm();
 
-		private CancellationTokenSource cancellationTokensSource;
-
-		private Task taskMonteCarloMethod;
+		private CollectionPoint collectionPoints = new CollectionPoint();
 
 		public MainForm()
 		{
 			InitializeComponent();
+
+			Action OnFinished = new Action(() =>
+			{
+				SetProgressBar(0, 0);
+				RefreshImage();
+				RefreshStatus();
+			});
+
+			collectionPoints.ProgressHandler = new Progress<CollectionProgressData>(pg =>
+			{
+				SetProgressBar(pg.value - 1, pg.maxValue);
+				SetProgressBar(pg.value, pg.maxValue);
+			});
+
+			collectionPoints.FinishedEvent += OnFinished;
+			maskForm.FinishedEvent += OnFinished;
 		}
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (taskMonteCarloMethod != null)
-			{
-				ClearTasks();
-			}
-
 			Application.Exit();
 		}
 
@@ -42,40 +51,50 @@ namespace MonteCarloS
 
 				if (openFileDialog.ShowDialog() == DialogResult.OK)
 				{
+					SetImage(null);
+
 					originImage = new Bitmap(openFileDialog.OpenFile());
 
-					if (taskMonteCarloMethod != null)
-					{
-						ClearTasks();
-					}
+					collectionPoints.Clear();
 
-					monteCarloMethod.Clear();
+					maskForm.FillDataAsync(originImage);
 
-					RefreshImage();
-					RefreshButton();
+					UseWaitCursor = true;
 				}
 			}
 		}
 
-		private void OnFinishCalculate()
+		private void OnFinishCalculate(List<Point> inside, List<Point> outside)
 		{
+			originImage = maskForm.Maps.Bitmap;
+
 			RefreshImage();
 
 			SetProgressBar(0, 0);
-			RefreshButton();
+			RefreshStatus();
 		}
 
-		private void RefreshButton()
+		private void RefreshStatus()
 		{
 			Invoke(new Action(() =>
-			{			
-				ApplyBtn.Enabled = taskMonteCarloMethod == null ? true : monteCarloMethod.IsCompleted;
-				ApplyBtn.Enabled &= originImage != null;
+			{
+				ApplyBtn.Enabled = maskForm.IsCompleted;
+				ClearBtn.Enabled = maskForm.IsCompleted && (collectionPoints.OutsidePoints.Count > 0 || collectionPoints.InsidePoints.Count > 0);
 
-				ClearBtn.Enabled = ApplyBtn.Enabled;
-				ClearBtn.Enabled &= monteCarloMethod.IsCompleted;
+				if (collectionPoints.InProgress)
+				{
+					UseWaitCursor = true;
+					ApplyBtn.Text = Properties.Resources.Cancel;
+					CancelMenuItem.Enabled = ApplyBtn.Enabled;
+				}
+				else
+				{
+					UseWaitCursor = false;
+					ApplyBtn.Text = Properties.Resources.ApplyShow;
+					CancelMenuItem.Enabled = false;
+				}
 
-				CencelMenuItem.Enabled = taskMonteCarloMethod == null ? false : !taskMonteCarloMethod.IsCompleted;
+				Refresh();
 			}));
 		}
 
@@ -84,27 +103,26 @@ namespace MonteCarloS
 			if (originImage != null)
 			{
 				// Draw Points
-				Bitmap image = (Bitmap)originImage.Clone();
-				if (monteCarloMethod.PointCount > 0)
-				{
-					DrawPoints(Graphics.FromImage(image), monteCarloMethod.ResultInside, monteCarloMethod.ResultOutside);
-				}
-				SetImage(image);
+				DirectBitmap directmap = new DirectBitmap(originImage);
+				DrawPoints(Graphics.FromImage(directmap.Bitmap));
+				SetImage(directmap.Bitmap);
 				// End Draw
 
 				// Print Info
 				Invoke(new Action(() =>
 				{
-					ResolutionTextBox.Text = image.Width * image.Height + " pxl.  (" + image.Width + "x" + image.Height + ")";
+					ResolutionTextBox.Text = originImage.Width * originImage.Height + " pxl.  (" + originImage.Width + "x" + originImage.Height + ")";
 
-					if (monteCarloMethod.SquarePrc() > 0)
+					float ratio = collectionPoints.GetInsideRatio();
+
+					if (ratio > 0)
 					{
-						SquarePrñTextBox.Text = (monteCarloMethod.SquarePrc() * 100) + "%";
-						SquarePxlTextBox.Text = monteCarloMethod.SquarePxl() + " pxl.";
+						SquarePrcTextBox.Text = (ratio * 100) + "%";
+						SquarePxlTextBox.Text = ratio * originImage.Width * originImage.Height + " pxl.";
 					}
 					else
 					{
-						SquarePrñTextBox.Text = "";
+						SquarePrcTextBox.Text = "";
 						SquarePxlTextBox.Text = "";
 					}
 				}));
@@ -112,67 +130,47 @@ namespace MonteCarloS
 			}
 		}
 
-		private void DrawPoints(Graphics g, List<Point> inside, List<Point> outside)
+		private void DrawPoints(Graphics g)
 		{
-			if (inside != null)
+			foreach (Point p in collectionPoints.InsidePoints)
 			{
-				foreach (Point p in inside)
-				{
-					if (sizePointNumeric.Value == 1)
-					{
-						g.FillRectangle(Brushes.Green, p.X, p.Y, 1, 1);
-					}
-					else
-					{
-						g.FillEllipse(Brushes.Green, p.X, p.Y, (int)sizePointNumeric.Value, (int)sizePointNumeric.Value);
-					}
-				}
+				int radius = (int)sizePointNumeric.Value;
+				g.FillEllipse(Brushes.Green, p.X - radius, p.Y - radius, radius * 2, radius * 2);
 			}
 
-			if (outside != null)
+			foreach (Point p in collectionPoints.OutsidePoints)
 			{
-				foreach (Point p in outside)
-				{
-					if (sizePointNumeric.Value == 1)
-					{
-						g.FillRectangle(Brushes.Red, p.X, p.Y, 1, 1);
-					}
-					else
-					{
-						g.FillEllipse(Brushes.Red, p.X, p.Y, (int)sizePointNumeric.Value, (int)sizePointNumeric.Value);
-					}
-				}
+				int radius = (int)sizePointNumeric.Value;
+				g.FillEllipse(Brushes.Red, p.X - radius, p.Y - radius, radius * 2, radius * 2);
 			}
 
 			g.Save();
 		}
 
-		private async void StartMonteCarloMethod()
+		private void GeneratePoints()
 		{
-			if (taskMonteCarloMethod != null)
+			if (maskForm.IsCompleted)
 			{
-				ClearTasks();
+				if (collectionPoints.InProgress)
+				{
+					collectionPoints.Cancel();
+				}
+				else
+				{
+					collectionPoints.Clear();
+
+					int amount = (int)pointsNumeric.Value;
+					collectionPoints.GeneratePointAsync(maskForm, amount);
+
+					RefreshStatus();
+					RefreshImage();
+				}
 			}
-
-			if (originImage != null)
-			{
-				monteCarloMethod.ProgressChangeEvent = SetProgressBar;
-
-				cancellationTokensSource = new CancellationTokenSource();
-
-				taskMonteCarloMethod = monteCarloMethod.CalculateAsync(originImage, (int)pointsNumeric.Value, OnFinishCalculate, cancellationTokensSource.Token);
-			}
-
-			RefreshImage();
-			RefreshButton();
-
-			await taskMonteCarloMethod;
-			ClearTasks();
 		}
 
-		private void ApplyBtn_ClickAsync(object sender, EventArgs e)
+		private void ApplyBtn_Click(object sender, EventArgs e)
 		{
-			StartMonteCarloMethod();
+			GeneratePoints();
 		}
 
 		private void SetProgressBar(int cur, int max)
@@ -183,47 +181,28 @@ namespace MonteCarloS
 				{
 					progressBar.Maximum = max;
 				}
+				else
+				{
+					progressBar.Maximum = 0;
+				}
 
 				if (cur >= 0)
 				{
 					progressBar.Value = cur;
+				}
+				else
+				{
+					progressBar.Value = 0;
 				}
 			}));
 		}
 
 		private void SetImage(Image img)
 		{
-			if (img != null)
+			Invoke(new Action(() =>
 			{
-				pointsNumeric.Maximum = img.Width * img.Height;
-
-				Invoke(new Action(() =>
-				{
-					pictureBox.Image = img;
-				}));
-			}
-		}
-
-		private void ClearTasks()
-		{
-			if (taskMonteCarloMethod != null)
-			{
-				if (!taskMonteCarloMethod.IsCompleted && cancellationTokensSource != null)
-				{
-					cancellationTokensSource.Cancel();
-				}
-
-				taskMonteCarloMethod.Wait();
-
-				taskMonteCarloMethod.Dispose();
-				cancellationTokensSource.Dispose();
-
-				taskMonteCarloMethod = null;
-				cancellationTokensSource = null;
-			}
-
-			SetProgressBar(0, 0);
-			RefreshButton();
+				pictureBox.Image = img;
+			}));
 		}
 
 		private void sizePointNumeric_ValueChanged(object sender, EventArgs e)
@@ -233,7 +212,10 @@ namespace MonteCarloS
 
 		private void CencelMenuItem_Click(object sender, EventArgs e)
 		{
-			ClearTasks();
+			if (collectionPoints.InProgress)
+			{
+				collectionPoints.Cancel();
+			}
 		}
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -244,14 +226,15 @@ namespace MonteCarloS
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			RefreshButton();
+			RefreshStatus();
 		}
 
 		private void ClearBtn_Click(object sender, EventArgs e)
 		{
-			monteCarloMethod.Clear();
+			collectionPoints.Clear();
+
 			RefreshImage();
-			RefreshButton();
+			RefreshStatus();
 		}
 	}
 }

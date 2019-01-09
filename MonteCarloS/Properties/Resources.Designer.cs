@@ -71,11 +71,42 @@ namespace MonteCarloS.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to This application demonstrates the Monte Carlo method.
-        ///The application opens an image with a closed shape then calculates the square through the Monte Carlo method and shows result.
+        ///The application opens an image with a closed shape then calculates the square through the Monte Carlo method and shows result
+        ///
+        ///Source code: https://github.com/uSpiritWolf/SampleMonteCarlo
+        ///
+        ///BSD 3-Clause License.
         /// </summary>
         internal static string AboutTheProgram {
             get {
                 return ResourceManager.GetString("AboutTheProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply and show.
+        /// </summary>
+        internal static string ApplyShow {
+            get {
+                return ResourceManager.GetString("ApplyShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        internal static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
             }
         }
     }

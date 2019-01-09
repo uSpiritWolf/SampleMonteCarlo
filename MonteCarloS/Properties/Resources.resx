@@ -122,6 +122,19 @@
   </data>
   <data name="AboutTheProgram" xml:space="preserve">
     <value>This application demonstrates the Monte Carlo method.
-The application opens an image with a closed shape then calculates the square through the Monte Carlo method and shows result</value>
+The application opens an image with a closed shape then calculates the square through the Monte Carlo method and shows result
+
+Source code: https://github.com/uSpiritWolf/SampleMonteCarlo
+
+BSD 3-Clause License</value>
+  </data>
+  <data name="ApplyShow" xml:space="preserve">
+    <value>Apply and show</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
   </data>
 </root>
