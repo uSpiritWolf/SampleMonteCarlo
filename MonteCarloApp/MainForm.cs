@@ -55,6 +55,10 @@ namespace MonteCarloApp
 
 					originImage = new Bitmap(openFileDialog.OpenFile());
 
+					if(collectionPoints.InProgress)
+					{
+						collectionPoints.Cancel();
+					}
 					collectionPoints.Clear();
 
 					maskForm.FillDataAsync(originImage);
