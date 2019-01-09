@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MonteCarloS
+namespace MonteCarloApp
 {
 	public partial class MainForm : Form
 	{
@@ -94,28 +94,13 @@ namespace MonteCarloS
 					CancelMenuItem.Enabled = false;
 				}
 
-				Refresh();
-			}));
-		}
-
-		private void RefreshImage()
-		{
-			if (originImage != null)
-			{
-				// Draw Points
-				DirectBitmap directmap = new DirectBitmap(originImage);
-				DrawPoints(Graphics.FromImage(directmap.Bitmap));
-				SetImage(directmap.Bitmap);
-				// End Draw
-
-				// Print Info
-				Invoke(new Action(() =>
+				if (originImage != null)
 				{
 					ResolutionTextBox.Text = originImage.Width * originImage.Height + " pxl.  (" + originImage.Width + "x" + originImage.Height + ")";
 
 					float ratio = collectionPoints.GetInsideRatio();
 
-					if (ratio > 0)
+					if (ratio > 0 && originImage != null)
 					{
 						SquarePrcTextBox.Text = (ratio * 100) + "%";
 						SquarePxlTextBox.Text = ratio * originImage.Width * originImage.Height + " pxl.";
@@ -125,26 +110,47 @@ namespace MonteCarloS
 						SquarePrcTextBox.Text = "";
 						SquarePxlTextBox.Text = "";
 					}
-				}));
-				// End Print
-			}
+				}
+				else
+				{
+					ResolutionTextBox.Text	= "";
+					SquarePrcTextBox.Text	= "";
+					SquarePxlTextBox.Text	= "";
+				}
+
+				Refresh();
+			}));
 		}
 
-		private void DrawPoints(Graphics g)
+		private void RefreshImage()
 		{
-			foreach (Point p in collectionPoints.InsidePoints)
+			if (originImage != null)
 			{
-				int radius = (int)sizePointNumeric.Value;
-				g.FillEllipse(Brushes.Green, p.X - radius, p.Y - radius, radius * 2, radius * 2);
-			}
+				DirectBitmap directmap = new DirectBitmap(originImage);
 
-			foreach (Point p in collectionPoints.OutsidePoints)
+				using (var g = Graphics.FromImage(directmap.Bitmap))
+				{
+					foreach (Point p in collectionPoints.InsidePoints)
+					{
+						int radius = (int)sizePointNumeric.Value;
+						g.FillEllipse(Brushes.Green, p.X - radius, p.Y - radius, radius * 2, radius * 2);
+					}
+
+					foreach (Point p in collectionPoints.OutsidePoints)
+					{
+						int radius = (int)sizePointNumeric.Value;
+						g.FillEllipse(Brushes.Red, p.X - radius, p.Y - radius, radius * 2, radius * 2);
+					}
+
+					g.Save();
+				};
+
+				SetImage(directmap.Bitmap);
+			}
+			else
 			{
-				int radius = (int)sizePointNumeric.Value;
-				g.FillEllipse(Brushes.Red, p.X - radius, p.Y - radius, radius * 2, radius * 2);
+				SetImage(null);
 			}
-
-			g.Save();
 		}
 
 		private void GeneratePoints()

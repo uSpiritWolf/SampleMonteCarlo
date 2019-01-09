@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8864891E-31BD-48BE-AFA3-051C8B40BDDF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MonteCarloS</RootNamespace>
-    <AssemblyName>MonteCarloS</AssemblyName>
+    <RootNamespace>MonteCarloApp</RootNamespace>
+    <AssemblyName>MonteCarloApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

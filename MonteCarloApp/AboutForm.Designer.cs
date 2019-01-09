@@ -1,4 +1,4 @@
-﻿namespace MonteCarloS
+﻿namespace MonteCarloApp
 {
 	partial class AboutForm
 	{
@@ -44,9 +44,7 @@
 			this.AboutTheProgramText.ReadOnly = true;
 			this.AboutTheProgramText.Size = new System.Drawing.Size(780, 105);
 			this.AboutTheProgramText.TabIndex = 0;
-			this.AboutTheProgramText.Text = "This application demonstrates the Monte Carlo method.\nThe application opens an im" +
-    "age with a closed shape then calculates the square through the Monte Carlo metho" +
-    "d and shows result";
+			this.AboutTheProgramText.Text = "";
 			// 
 			// AboutTheProgramTitle
 			// 
