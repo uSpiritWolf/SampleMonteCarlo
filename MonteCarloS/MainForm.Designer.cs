@@ -101,7 +101,7 @@ namespace MonteCarloS
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
 			this.openToolStripMenuItem.Text = "Open";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
@@ -109,19 +109,19 @@ namespace MonteCarloS
 			// 
 			this.CancelMenuItem.Enabled = false;
 			this.CancelMenuItem.Name = "CancelMenuItem";
-			this.CancelMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.CancelMenuItem.Size = new System.Drawing.Size(110, 22);
 			this.CancelMenuItem.Text = "Cancel";
 			this.CancelMenuItem.Click += new System.EventHandler(this.CencelMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(107, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -206,7 +206,7 @@ namespace MonteCarloS
 			this.tableLayoutPanelOptions.Controls.Add(this.pointsNumeric, 1, 0);
 			this.tableLayoutPanelOptions.Controls.Add(this.SizePointLabel, 0, 1);
 			this.tableLayoutPanelOptions.Controls.Add(this.sizePointNumeric, 1, 1);
-			this.tableLayoutPanelOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanelOptions.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanelOptions.Location = new System.Drawing.Point(3, 16);
 			this.tableLayoutPanelOptions.Name = "tableLayoutPanelOptions";
 			this.tableLayoutPanelOptions.RowCount = 2;
