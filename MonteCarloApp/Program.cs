@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace MonteCarloS
+namespace MonteCarloApp
 {
 	static class Program
 	{

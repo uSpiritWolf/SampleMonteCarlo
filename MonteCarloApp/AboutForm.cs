@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MonteCarloS
+namespace MonteCarloApp
 {
 	public partial class AboutForm : Form
 	{

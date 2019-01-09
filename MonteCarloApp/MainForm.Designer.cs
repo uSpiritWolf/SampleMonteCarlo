@@ -1,4 +1,4 @@
-namespace MonteCarloS
+namespace MonteCarloApp
 {
 	partial class MainForm
 	{

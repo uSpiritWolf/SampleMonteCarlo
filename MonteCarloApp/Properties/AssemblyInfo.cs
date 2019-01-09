@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MonteCarloS")]
+[assembly: AssemblyTitle("MonteCarloApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MonteCarloS")]
+[assembly: AssemblyProduct("MonteCarloApp")]
 [assembly: AssemblyCopyright("Copyright © 2019 by Alexey Chernykh")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
