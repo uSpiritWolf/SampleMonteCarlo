@@ -20,9 +20,9 @@ namespace MonteCarloS
 
 		public event Action FinishedEvent;
 
-		private Task task;
+		public Task CurrentTask { get; private set; }
 
-		private CancellationTokenSource cancellationSource;
+		private CancellationTokenSource CancellationSource { get; set; }
 
 		public CollectionPoint()
 		{
@@ -32,21 +32,21 @@ namespace MonteCarloS
 
 		public async void GeneratePointAsync(MaskForm mf, int amount)
 		{
-			if (task != null)
+			if (CurrentTask != null)
 			{
-				await task;
+				await CurrentTask;
 			}
 
-			cancellationSource = new CancellationTokenSource();
+			CancellationSource = new CancellationTokenSource();
 
-			task = Task.Run(() => GeneratePointImpl(mf, amount), cancellationSource.Token);
+			CurrentTask = Task.Run(() => GeneratePointImpl(mf, amount), CancellationSource.Token);
 
-			await task;
-			task.Dispose();
-			task = null;
+			await CurrentTask;
+			CurrentTask.Dispose();
+			CurrentTask = null;
 
-			cancellationSource.Dispose();
-			cancellationSource = null;
+			CancellationSource.Dispose();
+			CancellationSource = null;
 
 			FinishedEvent();
 		}
@@ -57,19 +57,19 @@ namespace MonteCarloS
 
 			Task progressTask = Task.Run(() =>
 			{
-				while (current < amount && !cancellationSource.Token.IsCancellationRequested)
+				while (current < amount && !CancellationSource.Token.IsCancellationRequested)
 				{
 					ProgressHandler?.Report(new CollectionProgressData { value = current, maxValue = amount });
 					Thread.Sleep(100);
 				}
-			}, cancellationSource.Token);
+			}, CancellationSource.Token);
 
 			Random rnd = new Random();
 
 			HashSet<System.Drawing.Point> tempInsidePoints = new HashSet<System.Drawing.Point>();
 			HashSet<System.Drawing.Point> tempOutsidePoints = new HashSet<System.Drawing.Point>();
 
-			while (current < amount && !cancellationSource.Token.IsCancellationRequested)
+			while (current < amount && !CancellationSource.Token.IsCancellationRequested)
 			{
 				System.Drawing.Point pt = new System.Drawing.Point(rnd.Next(0, mf.Width), rnd.Next(0, mf.Height));
 
@@ -85,7 +85,7 @@ namespace MonteCarloS
 				++current;
 			}
 
-			if (!cancellationSource.Token.IsCancellationRequested)
+			if (!CancellationSource.Token.IsCancellationRequested)
 			{
 				InsidePoints = tempInsidePoints;
 				OutsidePoints = tempOutsidePoints;
@@ -110,7 +110,7 @@ namespace MonteCarloS
 		{
 			get
 			{
-				return task != null && !task.IsCompleted;
+				return CurrentTask != null && !CurrentTask.IsCompleted;
 			}
 		}
 
@@ -118,7 +118,7 @@ namespace MonteCarloS
 		{
 			if(InProgress)
 			{
-				cancellationSource.Cancel();
+				CancellationSource.Cancel();
 			}
 		}
 	}

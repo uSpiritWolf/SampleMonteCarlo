@@ -17,7 +17,7 @@ namespace MonteCarloS
 
 		public event Action FinishedEvent;
 
-		private Task task { set; get; }
+		private Task CurrentTask { set; get; }
 
 		public MaskForm()
 		{
@@ -28,16 +28,16 @@ namespace MonteCarloS
 		{
 			IsCompleted = false;
 
-			if (task != null)
+			if (CurrentTask != null)
 			{
-				await task;
+				await CurrentTask;
 			}
 
-			task = Task.Run(() => FillData(bmp.Clone() as Bitmap));
+			CurrentTask = Task.Run(() => FillData(bmp.Clone() as Bitmap));
 
-			await task;
-			task.Dispose();
-			task = null;
+			await CurrentTask;
+			CurrentTask.Dispose();
+			CurrentTask = null;
 
 			IsCompleted = true;
 
@@ -58,7 +58,7 @@ namespace MonteCarloS
 
 		public void Wait()
 		{
-			task.Wait();
+			CurrentTask.Wait();
 		}
 
 		public bool IsInForm(Point pt)
